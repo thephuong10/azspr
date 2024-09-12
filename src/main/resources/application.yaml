@@ -4,6 +4,18 @@ server:
 spring:
   application:
     name: user-service
+  datasource:
+    url: jdbc:sqlserver://springazdbdemoserver.database.windows.net:1433;database=springAZDBDemo;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: springazdbdemoadmin
+    password: Sql@123456789
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
 
 springdoc:
   api-docs:

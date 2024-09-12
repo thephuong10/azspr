@@ -1,13 +1,12 @@
 package com.az.userservice.controllers;
 
 import com.az.userservice.models.dtos.UserDto;
+import com.az.userservice.models.requests.CreateUserRequest;
+import com.az.userservice.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,23 +14,26 @@ import java.util.UUID;
 @RequestMapping("/api/user-service/v1/user")
 public class UserController {
 
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public ResponseEntity<List<UserDto>>getAll(){
-        UserDto userDto = new UserDto();
-        userDto.setId(UUID.randomUUID());
-        userDto.setEmail("email123@gmail.com");
-        userDto.setAvatar("avatar");
-        return ResponseEntity.ok(Collections.singletonList(userDto));
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<UserDto>>getById(@PathVariable String id){
-        UserDto userDto = new UserDto();
-        userDto.setId(UUID.randomUUID());
-        userDto.setEmail(id.concat("email123@gmail.com"));
-        userDto.setAvatar("avatar");
-        return ResponseEntity.ok(Collections.singletonList(userDto));
+    public ResponseEntity<UserDto>getById(@PathVariable UUID id){
+        return ResponseEntity.ok(userService.getById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<UserDto>create(@RequestBody CreateUserRequest request){
+        return ResponseEntity.ok(userService.create(request));
+    }
 
 }
